@@ -12,7 +12,7 @@
 int main()
 {
 	int reset = 0, playerCountIGNORE = 0;
-	char password[20] = "1234", userinput[20];
+	char password[20] = "12345", userinput[20];
 
 	printf("Welcome to the game!!\nPlease enter the password: ");
 	gets_s(userinput, 20);
@@ -59,7 +59,8 @@ int main()
 			for (i = 0; i <= 36; i++)
 			{
 				int currentPlayer = playerCountIGNORE % 2;
-
+				// these are commented out for gameplay reasons
+				/*
 				//setting item type & printing
 				for (row = 0; row <= 5; row++)
 				{
@@ -82,7 +83,7 @@ int main()
 							printf("\n");
 						}
 					}
-				}
+				}*/
 
 				printf("\n\n");
 
@@ -142,9 +143,9 @@ int main()
 					printf("Player 2's turn!\n\n");
 					playerCountIGNORE++;
 				}
-
+				int err = 0;
 				//check if x or y is out of range
-				do
+				while (err == 0)
 				{
 					do
 					{
@@ -159,8 +160,19 @@ int main()
 							printf("Out of range, try again\n");
 						}
 					} while ((x < 0 || x > 5) || (y < 0 || y > 5));
-					printf("Space already chosen.\n");
-				} while (board[x][y] != 0);
+
+					err = board[x][y];
+
+					if (err != 0)
+					{
+						printf("Space already chosen.\n");
+						err = 0;
+					}
+					else
+					{
+						err++;
+					}
+				} 
 
 
 				userGuess = realBoard[x][y];
@@ -240,11 +252,11 @@ int main()
 
 					if (gameActive == 'y' || gameActive == 'Y')
 					{
-						reset == 0;
+						reset = 0;
 					}
 					else
 					{
-						reset == 1;
+						reset = 1;
 					}
 				}
 				else if (goldCount2 == 50)
@@ -254,11 +266,11 @@ int main()
 
 					if (gameActive == 'y' || gameActive == 'Y')
 					{
-						reset == 0;
+						reset = 0;
 					}
 					else
 					{
-						reset == 1;
+						reset = 1;
 					}
 				}
 

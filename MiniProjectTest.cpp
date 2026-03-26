@@ -125,13 +125,17 @@ int main()
 				}
 				printf("     x\n\n");
 
+				printf("--------------------------------\n");
+
 				if (currentPlayer == 0)
 				{
 					printf("Total gold found: %i\n", goldCount);
+					printf("Total bombs found: %i\n", bombCount);
 				}
 				else
 				{
 					printf("Total gold found: %i\n", goldCount2);
+					printf("Total bombs found: %i\n", bombCount);
 				}
 				
 				
@@ -141,11 +145,14 @@ int main()
 				{
 					if (Player1Name[strlen(Player1Name) - 1] == 's')
 					{
-						printf("%s' turn!\n\n", Player1Name);
+						printf("%s' turn!\n", Player1Name);
+						printf("----------------\n");
 					}
 					else
 					{
-						printf("%s's turn!\n\n", Player1Name);
+						printf("%s's turn!\n", Player1Name);
+						printf("----------------\n");
+
 					}
 					playerCountIGNORE++;
 				}
@@ -153,11 +160,11 @@ int main()
 				{
 					if (Player2Name[strlen(Player2Name) - 1] == 's')
 					{
-						printf("%s' turn!\n\n", Player2Name);
+						printf("%s' turn!\n", Player2Name);
 					}
 					else
 					{
-						printf("%s's turn!\n\n", Player2Name);
+						printf("%s's turn!\n", Player2Name);
 					}
 					playerCountIGNORE++;
 				}
@@ -263,7 +270,7 @@ int main()
 
 				else
 				{
-					printf("nothign,,, soray\n\n");
+					printf("There was nothing inside.\n\n");
 					board[x][y] = 3;
 				}
 
@@ -297,6 +304,20 @@ int main()
 				}
 
 			}
+			if (i == 36)
+			{
+				printf("Nobody won! Would you like to try again? (Y/N): ");
+				scanf_s("%c ", &gameActive);
+
+				if (gameActive == 'y' || gameActive == 'Y')
+				{
+					reset = 0;
+				}
+				else
+				{
+					reset = 1;
+			}
+
 			//printf("%i", userGuess);
 		}
 	}

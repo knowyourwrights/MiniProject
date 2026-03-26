@@ -12,7 +12,7 @@
 int main()
 {
 	int reset = 0, playerCountIGNORE = 0;
-	char password[20] = "12345", userinput[20];
+	char password[20] = "12345", userinput[20], Player1Name[20], Player2Name[20];
 
 	printf("Welcome to the game!!\nPlease enter the password: ");
 	gets_s(userinput, 20);
@@ -21,13 +21,20 @@ int main()
 	{
 		printf("Correct! Welcome in.");
 		printf("\n------------------------------------------------------------------------\n");
+
+		printf("Enter Player 1 name (20 char MAX): ");
+		gets_s(Player1Name, 20);
+
+		printf("Enter Player 2 name (20 char MAX): ");
+		gets_s(Player2Name, 20);
+
 		// start of game below vv
 
 		while (reset == 0)
 		{
 			srand((int)time(0));
 
-			int row, col, x, y, userGuess, goldCount = 0, goldCount2 = 0;
+			int row, col, x, y, userGuess, goldCount = 0, goldCount2 = 0, bombCount = 0, bombCount2 = 0;
 
 			char mask = 0x1, gameActive;
 
@@ -96,17 +103,14 @@ int main()
 						{
 							printf("# ");
 						}
-
 						else if (board[row][col] == 1)
 						{
 							printf("B ");
 						}
-
 						else if (board[row][col] == 2)
 						{
 							printf("G ");
 						}
-
 						else if (board[row][col] == 3)
 						{
 							printf(". ");
@@ -135,12 +139,26 @@ int main()
 
 				if (currentPlayer == 0)
 				{
-					printf("Player 1's turn!\n\n");
+					if (Player1Name[strlen(Player1Name) - 1] == 's')
+					{
+						printf("%s' turn!\n\n", Player1Name);
+					}
+					else
+					{
+						printf("%s's turn!\n\n", Player1Name);
+					}
 					playerCountIGNORE++;
 				}
 				else
 				{
-					printf("Player 2's turn!\n\n");
+					if (Player2Name[strlen(Player2Name) - 1] == 's')
+					{
+						printf("%s' turn!\n\n", Player2Name);
+					}
+					else
+					{
+						printf("%s's turn!\n\n", Player2Name);
+					}
 					playerCountIGNORE++;
 				}
 				int err = 0;
@@ -198,6 +216,8 @@ int main()
 					if (currentPlayer == 0)
 					{
 						printf("Bomb found.\n\n");
+						bombCount++;
+
 						board[x][y] = 1;
 						if (goldCount > 0)
 						{
@@ -207,6 +227,8 @@ int main()
 					else
 					{
 						printf("Bomb found.\n\n");
+						bombCount2++;
+
 						board[x][y] = 1;
 						if (goldCount2 > 0)
 						{

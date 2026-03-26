@@ -7,192 +7,269 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 
 int main()
 {
-	int reset = 0;
+	int reset = 0, playerCountIGNORE = 0;
+	char password[20] = "1234", userinput[20];
 
-	while (reset == 0)
+	printf("Welcome to the game!!\nPlease enter the password: ");
+	gets_s(userinput, 20);
+
+	if (strcmp(password, userinput) == 0)
 	{
+		printf("Correct! Welcome in.");
+		printf("\n------------------------------------------------------------------------\n");
+		// start of game below vv
 
-
-		srand((int)time(0));
-
-		int row, col, x, y, userGuess, goldCount = 0;
-
-		char mask = 0x1, gameActive;
-
-		uint8_t r, gold;
-
-		int board[6][6], realBoard[6][6]; // board is for printing, itemStatus is for what type of spot it is, realBoard holds values behind each spot
-		int i;
-
-		// itemstatus = 0 not checked, 1 gold, 2 bomb,  3 nothing
-
-		for (row = 0; row <= 5; row++)
+		while (reset == 0)
 		{
-			for (col = 0; col <= 5; col++)
-			{
-				board[row][col] = 0;
-			}
-		}
+			srand((int)time(0));
 
-		//actual values behind each box
-		for (row = 0; row <= 5; row++)
-		{
-			for (col = 0; col <= 5; col++)
-			{
-				r = rand() % 255;
-				realBoard[row][col] = r;
-			}
-		}
+			int row, col, x, y, userGuess, goldCount = 0, goldCount2 = 0;
 
-		for (i = 0; i <= 36; i++)
-		{
-			//setting item type & printing
-			/**/
+			char mask = 0x1, gameActive;
+
+			uint8_t r, gold;
+
+			int board[6][6], realBoard[6][6]; // board is for printing, itemStatus is for what type of spot it is, realBoard holds values behind each spot
+			int i;
+
+			// itemstatus = 0 not checked, 1 gold, 2 bomb,  3 nothing
+
 			for (row = 0; row <= 5; row++)
 			{
 				for (col = 0; col <= 5; col++)
 				{
-					printf("%i ", board[row][col]);
+					board[row][col] = 0;
 				}
-				printf("\n");
 			}
 
-			printf("\n\n");
-			// printing actual values
+			//actual values behind each box
 			for (row = 0; row <= 5; row++)
 			{
 				for (col = 0; col <= 5; col++)
 				{
-					printf("%d ", realBoard[row][col]);
-					if (col == 5)
-					{
-						printf("\n");
-					}
+					r = rand() % 255;
+					realBoard[row][col] = r;
 				}
 			}
 
-			printf("\n\n");
-
-
-			// printing initial board
-			for (row = 0; row <= 5; row++)
+			for (i = 0; i <= 36; i++)
 			{
-				for (col = 0; col <= 5; col++)
+				int currentPlayer = playerCountIGNORE % 2;
+
+				//setting item type & printing
+				for (row = 0; row <= 5; row++)
 				{
-					if (board[row][col] == 0)
+					for (col = 0; col <= 5; col++)
 					{
-						printf("# ");
+						printf("%i ", board[row][col]);
 					}
-
-					else if (board[row][col] == 1)
-					{
-						printf("B ");
-					}
-
-					else if (board[row][col] == 2)
-					{
-						printf("G ");
-					}
-
-					else if (board[row][col] == 3)
-					{
-						printf(". ");
-					}
-
-
+					printf("\n");
 				}
-				if (col == 5 && row == 3)
+
+				printf("\n\n");
+				// printing actual values
+				for (row = 0; row <= 5; row++)
 				{
-					printf(" y");
-
+					for (col = 0; col <= 5; col++)
+					{
+						printf("%d ", realBoard[row][col]);
+						if (col == 5)
+						{
+							printf("\n");
+						}
+					}
 				}
-				printf("\n");
-			}
-			printf("     x\n\n");
 
-			printf("Total gold found: %i", goldCount);
+				printf("\n\n");
 
-			do
-			{
+				// printing initial board
+				for (row = 0; row <= 5; row++)
+				{
+					for (col = 0; col <= 5; col++)
+					{
+						if (board[row][col] == 0)
+						{
+							printf("# ");
+						}
+
+						else if (board[row][col] == 1)
+						{
+							printf("B ");
+						}
+
+						else if (board[row][col] == 2)
+						{
+							printf("G ");
+						}
+
+						else if (board[row][col] == 3)
+						{
+							printf(". ");
+						}
+					}
+					if (col == 5 && row == 3)
+					{
+						printf(" y");
+
+					}
+					printf("\n");
+				}
+				printf("     x\n\n");
+
+				if (currentPlayer == 0)
+				{
+					printf("Total gold found: %i\n", goldCount);
+				}
+				else
+				{
+					printf("Total gold found: %i\n", goldCount2);
+				}
+				
+				
+				printf("--------------------------------\n");
+
+				if (currentPlayer == 0)
+				{
+					printf("Player 1's turn!\n\n");
+					playerCountIGNORE++;
+				}
+				else
+				{
+					printf("Player 2's turn!\n\n");
+					playerCountIGNORE++;
+				}
+
+				//check if x or y is out of range
 				do
 				{
-					printf("\nChoose a position 0-5 (x): ");
-					scanf_s("%d", &x);
-
-					printf("\nChoose a position 0-5 (y): ");
-					scanf_s("%d", &y);
-
-					if (x > 5 || x < 0 || y > 5 || y < 0)
+					do
 					{
-						printf("Out of range, try again\n");
+						printf("\nChoose a position 0-5 (x, ROW): ");
+						scanf_s("%d", &x);
+
+						printf("\nChoose a position 0-5 (y, COL): ");
+						scanf_s("%d", &y);
+
+						if (x > 5 || x < 0 || y > 5 || y < 0)
+						{
+							printf("Out of range, try again\n");
+						}
+					} while ((x < 0 || x > 5) || (y < 0 || y > 5));
+					printf("Space already chosen.\n");
+				} while (board[x][y] != 0);
+
+
+				userGuess = realBoard[x][y];
+
+
+				//checking 8bit value of guess
+				printf("\n");
+				for (int j = 7; j >= 0; j--)
+				{
+					if (userGuess & (1 << j))
+					{
+						printf("1");
 					}
-				} while ((x < 0 || x > 5) || (y < 0 || y > 5));
-				printf("Space already chosen.\n");
-			} while (board[x][y] != 0);
-
-			userGuess = realBoard[x][y];
-
-
-			printf("\n");
-			for (int j = 7; j >= 0; j--)
-			{
-				if (userGuess & (1 << j))
-				{
-					printf("1");
+					else
+					{
+						printf("0");
+					}
 				}
+				printf("\n");
+
+				if (((userGuess >> 0) & 1) == 0)
+				{
+					if (currentPlayer == 0)
+					{
+						printf("Bomb found.\n\n");
+						board[x][y] = 1;
+						if (goldCount > 0)
+						{
+							goldCount -= 1;
+						}
+					}
+					else
+					{
+						printf("Bomb found.\n\n");
+						board[x][y] = 1;
+						if (goldCount2 > 0)
+						{
+							goldCount2 -= 1;
+						}
+					}
+				}
+
+				else if ((((userGuess >> 1) & 1) == 1) && (((userGuess >> 0) & 1) == 1))
+				{
+					if (currentPlayer == 0)
+					{
+						printf("Gold found.\n\n");
+						board[x][y] = 2;
+
+						gold = (realBoard[x][y] >> 4);
+
+						printf("%i\n\n", gold);
+						goldCount += gold;
+					}
+					else
+					{
+						printf("Gold found.\n\n");
+						board[x][y] = 2;
+
+						gold = (realBoard[x][y] >> 4);
+
+						printf("%i\n\n", gold);
+						goldCount2 += gold;
+					}
+				}
+
 				else
 				{
-					printf("0");
+					printf("nothign,,, soray\n\n");
+					board[x][y] = 3;
 				}
-			}
-			printf("\n");
 
-			if (((userGuess >> 0) & 1) == 0)
-			{
-				printf("Bomb found.\n\n");
-				board[x][y] = 1;
-				if (goldCount > 0)
+				if (goldCount == 50)
 				{
-					goldCount -= 1;
+					printf("WOOOOOOOOOOOOOOOOOO player 1 win ^_^\nDo you want to play again? (Y/N): ");
+					scanf_s("%c ", &gameActive);
+
+					if (gameActive == 'y' || gameActive == 'Y')
+					{
+						reset == 0;
+					}
+					else
+					{
+						reset == 1;
+					}
 				}
-
-			}
-
-			else if ((((userGuess >> 1) & 1) == 1) && (((userGuess >> 0) & 1) == 1))
-			{
-				printf("Gold found.\n\n");
-				board[x][y] = 2;
-				gold = (realBoard[x][y] >> 4);
-				printf("%i\n\n", gold);
-				goldCount += gold;
-			}
-
-			else
-			{
-				printf("nothign,,, soray\n\n");
-				board[x][y] = 3;
-			}
-
-			if (goldCount == 50)
-			{
-				printf("WOOOOOOOOOOOOOOOOOO do you want to play again? (Y/N): ");
-				scanf_s(" %c" &gameActive);
-
-				if (gameActive == 'y' || gameActive == 'Y')
+				else if (goldCount2 == 50)
 				{
-					reset == 0;
-				}
-				else
-				{
-					reset == 1;
-				}
-			}
+					printf("WOOOOOOOOOOOOOOOOOO player 2 win ^_^\nDo you want to play again? (Y/N): ");
+					scanf_s("%c ", &gameActive);
 
+					if (gameActive == 'y' || gameActive == 'Y')
+					{
+						reset == 0;
+					}
+					else
+					{
+						reset == 1;
+					}
+				}
+
+			}
+			//printf("%i", userGuess);
 		}
-		//printf("%i", userGuess);
+	}
+	else
+	{
+		printf("NOaUEWHGJD WRONG,. wrongnggg try again (one attempt): ");
+		gets_s(userinput, 20);
 	}
 	return(0);
 }
